@@ -120,6 +120,8 @@ function DocumentsTable({
     zIndex: 100,
     height: "44px",
     borderBottom: `2px solid ${alpha(theme.palette.kyoPurple?.main || '#6e3cbe', 0.3)}`,
+    borderRight: "none",
+    borderLeft: "none",
     textTransform: "uppercase" as const,
     py: 1,
   };
@@ -160,6 +162,13 @@ function DocumentsTable({
         background: "white",
         "& .MuiTableContainer-root": {
           borderRadius: "12px",
+        },
+        "& .MuiTableHead-root .MuiTableCell-root": {
+          borderRight: "none",
+          borderLeft: "none",
+        },
+        "& .MuiTableCell-root": {
+          borderCollapse: "collapse",
         },
       }}
     >
