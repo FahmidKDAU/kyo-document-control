@@ -78,15 +78,13 @@ function ContentViewPage() {
         }
 
         const response = await docService.getDocumentById(id);
-        console.log(response);
+
         if (response.data.downloadoriginalfiletype !== true) {
           setDownloadType("PDF");
         } else {
           setDownloadType("");
         }
         setDocumentData(response);
-        console.log(response);
-        console.log(downloadType);
       } catch (error) {
         console.log(error);
       }
@@ -346,22 +344,24 @@ function ContentViewPage() {
                           }}
                         >
                           <Box display="flex" gap={0.7} flexWrap="wrap">
-                            {documentData.data.category.map((category, index) => (
-                              <Chip
-                                key={index}
-                                label={category}
-                                size="small"
-                                variant="outlined"
-                                sx={{
-                                  height: "26px",
-                                  fontSize: "0.8rem",
-                                  borderColor: "rgba(110, 60, 190, 0.3)",
-                                  color: "#6e3cbe",
-                                  backgroundColor: "rgba(110, 60, 190, 0.05)",
-                                  fontWeight: 500,
-                                }}
-                              />
-                            ))}
+                            {documentData.data.category.map(
+                              (category, index) => (
+                                <Chip
+                                  key={index}
+                                  label={category}
+                                  size="small"
+                                  variant="outlined"
+                                  sx={{
+                                    height: "26px",
+                                    fontSize: "0.8rem",
+                                    borderColor: "rgba(110, 60, 190, 0.3)",
+                                    color: "#6e3cbe",
+                                    backgroundColor: "rgba(110, 60, 190, 0.05)",
+                                    fontWeight: 500,
+                                  }}
+                                />
+                              )
+                            )}
                           </Box>
                         </TableCell>
                       </TableRow>
@@ -394,22 +394,24 @@ function ContentViewPage() {
                           }}
                         >
                           <Box display="flex" gap={0.7} flexWrap="wrap">
-                            {documentData.data.functionsubfn.map((func, index) => (
-                              <Chip
-                                key={index}
-                                label={func}
-                                size="small"
-                                variant="outlined"
-                                sx={{
-                                  height: "26px",
-                                  fontSize: "0.8rem",
-                                  borderColor: "rgba(156, 39, 176, 0.3)",
-                                  color: "#9c27b0",
-                                  backgroundColor: "rgba(156, 39, 176, 0.05)",
-                                  fontWeight: 500,
-                                }}
-                              />
-                            ))}
+                            {documentData.data.functionsubfn.map(
+                              (func, index) => (
+                                <Chip
+                                  key={index}
+                                  label={func}
+                                  size="small"
+                                  variant="outlined"
+                                  sx={{
+                                    height: "26px",
+                                    fontSize: "0.8rem",
+                                    borderColor: "rgba(156, 39, 176, 0.3)",
+                                    color: "#9c27b0",
+                                    backgroundColor: "rgba(156, 39, 176, 0.05)",
+                                    fontWeight: 500,
+                                  }}
+                                />
+                              )
+                            )}
                           </Box>
                         </TableCell>
                       </TableRow>
@@ -509,7 +511,7 @@ function ContentViewPage() {
               sx={{
                 borderColor: "#6e3cbe",
                 color: "#6e3cbe",
-                background:"white",
+                background: "white",
                 fontWeight: 600,
                 borderRadius: "8px",
                 textTransform: "none",

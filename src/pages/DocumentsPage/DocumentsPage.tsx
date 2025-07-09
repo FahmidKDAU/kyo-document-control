@@ -49,10 +49,10 @@ interface FilterData {
   entries: FilterEntry[];
 }
 
-const DocumentsPage: React.FC<DocumentsPageProps> = ({ 
-  docTypes = [], 
+const DocumentsPage: React.FC<DocumentsPageProps> = ({
+  docTypes = [],
   documents = [], // Receive documents as prop
-  totalDocumentCount = 0 // Receive totalDocumentCount as prop
+  totalDocumentCount = 0, // Receive totalDocumentCount as prop
 }) => {
   const { category } = useParams<{ category?: string }>();
   // Remove local documents state - now using prop
@@ -97,7 +97,7 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({
     const getFilterData = async () => {
       try {
         const response = await docService.getFilterData();
-        console.log(response);
+
         setFilterData(response);
       } catch (error) {
         console.error("There was an error fetching filter data:", error);
@@ -140,18 +140,24 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({
     baseFilteredDocuments.forEach((doc) => {
       // Add categories
       if (doc.data.category && Array.isArray(doc.data.category)) {
-        doc.data.category.forEach((cat: string) => availableCategories.add(cat));
+        doc.data.category.forEach((cat: string) =>
+          availableCategories.add(cat)
+        );
       }
-      
+
       // Add functions
       if (doc.data.functionsubfn && Array.isArray(doc.data.functionsubfn)) {
-        doc.data.functionsubfn.forEach((fn: string) => availableFunctions.add(fn));
+        doc.data.functionsubfn.forEach((fn: string) =>
+          availableFunctions.add(fn)
+        );
       }
     });
 
     // Get full filter data for reference
     const categoryData = filterData.find((item) => item.name === "category");
-    const functionData = filterData.find((item) => item.name === "functionsubfn");
+    const functionData = filterData.find(
+      (item) => item.name === "functionsubfn"
+    );
 
     const filterButtons = [];
 
@@ -169,7 +175,7 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({
     if (categoryData && availableCategories.size > 0) {
       const availableCategoryList = Array.from(availableCategories).sort();
       filterButtons.push({
-        name: "Categories", 
+        name: "Categories",
         data: availableCategoryList,
         keyName: "category",
       });
@@ -200,13 +206,13 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({
       const matchesCategory = filterQuery.category
         ? doc.data.category.some((cat) => filterQuery.category.includes(cat))
         : true;
-      
+
       const matchesFunctionSubFn = filterQuery.functionsubfn
         ? doc.data.functionsubfn.some((fn) =>
             filterQuery.functionsubfn.includes(fn)
           )
         : true;
-      
+
       const matchesSearch = searchQuery
         ? doc.data.name.toLowerCase().includes(searchQuery.toLowerCase())
         : true;
@@ -295,7 +301,9 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({
                 display: "flex",
                 alignItems: "center",
                 textDecoration: "none",
-                "&:hover": { color: theme.palette.kyoPurple?.main || "#6e3cbe" },
+                "&:hover": {
+                  color: theme.palette.kyoPurple?.main || "#6e3cbe",
+                },
               }}
             >
               <HomeIcon sx={{ mr: 0.5, fontSize: "1rem" }} />
@@ -307,7 +315,9 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({
               onClick={() => navigate("/documents")}
               sx={{
                 textDecoration: "none",
-                "&:hover": { color: theme.palette.kyoPurple?.main || "#6e3cbe" },
+                "&:hover": {
+                  color: theme.palette.kyoPurple?.main || "#6e3cbe",
+                },
               }}
             >
               Documents

@@ -58,7 +58,6 @@ const getFilterData = async () => {
 const getDocTypes = async () => {
   try {
     const response = await axios.get(`/api/doctypes`);
-    console.log(response.data);
     return response.data;
   } catch (error) {
     console.log("There was an error fetching the document types:", error);
