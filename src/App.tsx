@@ -19,6 +19,7 @@ interface DocType {
 function App() {
   const [docTypes, setDocTypes] = useState<DocType[]>([]);
   const [documents, setDocuments] = useState([]);
+  const [isLoading, setIsLoading] = useState(true); 
   const [totalDocumentCount, setTotalDocumentCount] = useState<number>(0);
 
   useEffect(() => {
@@ -33,12 +34,15 @@ function App() {
 
     const getDocuments = async () => {
       try {
+        setIsLoading(true); 
         const response = await docService.getDocuments();
         setDocuments(response);
         setTotalDocumentCount(response.length); // Set total count
       } catch (error) {
         console.error("There was an error fetching documents:", error);
         setTotalDocumentCount(0);
+      } finally { 
+        setIsLoading(false); 
       }
     };
 
@@ -82,6 +86,7 @@ function App() {
                 element={
                   <DocumentsPage 
                     docTypes={docTypes} 
+                       isLoading={isLoading}
                     documents={documents}
                     totalDocumentCount={totalDocumentCount}
                   />

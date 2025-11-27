@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Paper, alpha } from "@mui/material";
+import { Box, Button, TextField, Paper, alpha, Skeleton } from "@mui/material";
 import { useState } from "react";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
@@ -18,6 +18,7 @@ function Filters({
   searchQuery,
   documents,
   expandButton,
+  isLoading = false,
 }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -54,16 +55,24 @@ function Filters({
           flex: "0 0 auto",
         }}
       >
-        {filterButtons.map((filterObj) => (
-          <Box key={filterObj.name}>
-            <DropDownFilter
-              filterObj={filterObj}
-              handleFilterChange={handleFilterChange}
-              filterQuery={filterQuery}
-              setFilterQuery={setfilterQuery}
-            />
-          </Box>
-        ))}
+        {isLoading ? (
+          // Show skeleton placeholders while loading
+          <>
+            <Skeleton variant="rounded" width={150} height={44} sx={{ borderRadius: "12px" }} />
+            <Skeleton variant="rounded" width={150} height={44} sx={{ borderRadius: "12px" }} />
+          </>
+        ) : (
+          filterButtons.map((filterObj) => (
+            <Box key={filterObj.name}>
+              <DropDownFilter
+                filterObj={filterObj}
+                handleFilterChange={handleFilterChange}
+                filterQuery={filterQuery}
+                setFilterQuery={setfilterQuery}
+              />
+            </Box>
+          ))
+        )}
       </Box>
 
       {/* Right Section - Search & Actions */}

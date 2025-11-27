@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Document } from "../../Types/types";
 import docService from "../../features/Documents/services/docService";
 import {
@@ -17,6 +17,7 @@ import {
   Breadcrumbs,
   Link,
   Chip,
+  Skeleton,
 } from "@mui/material";
 import {
   DocumentScanner,
@@ -31,15 +32,28 @@ import {
   Category,
   Functions,
   CalendarToday,
+  ArrowBack,
 } from "@mui/icons-material";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 
 function ContentViewPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
   const [documentData, setDocumentData] = useState<Document | null>(null);
   const [downloadType, setDownloadType] = useState<string>("");
+
+  // Extract search state from URL params
+  const hasSearchState = searchParams.has('search') || searchParams.has('filterCategory') || searchParams.has('filterFunctions');
+  const fromCategory = searchParams.get('fromCategory');
+
+  const handleBackToSearch = () => {
+    // Build the return URL with preserved search state
+    const returnPath = fromCategory ? `/documents/${fromCategory}` : '/documents';
+    const queryString = searchParams.toString();
+    navigate(`${returnPath}${queryString ? `?${queryString}` : ''}`);
+  };
 
   useEffect(() => {
     const getDocumentContent = async () => {
@@ -156,6 +170,94 @@ function ContentViewPage() {
     }
   };
 
+  // Show skeleton loading while data is being fetched
+  if (!documentData || !pdfUrl) {
+    return (
+      <Box
+        sx={{
+          height: "calc(100vh - 140px)",
+          display: "flex",
+          flexDirection: "row",
+          gap: 2,
+          padding: "8px",
+        }}
+      >
+        {/* Left Sidebar Skeleton */}
+        <Paper
+          elevation={2}
+          sx={{
+            background:
+              "linear-gradient(135deg, rgba(110, 60, 190, 0.05) 0%, rgba(110, 60, 190, 0.02) 100%)",
+            borderRadius: "12px",
+            padding: "16px",
+            border: "1px solid rgba(110, 60, 190, 0.1)",
+            width: "380px",
+            flexShrink: 0,
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+          }}
+        >
+          {/* Breadcrumbs Skeleton */}
+          <Box display="flex" gap={1} mb={1}>
+            <Skeleton variant="text" width={80} height={20} />
+            <Skeleton variant="text" width={100} height={20} />
+            <Skeleton variant="text" width={120} height={20} />
+          </Box>
+
+          {/* Buttons Skeleton */}
+          <Box display="flex" flexDirection="column" gap={1}>
+            <Skeleton variant="rounded" width="100%" height={36} />
+            <Skeleton variant="rounded" width="100%" height={36} />
+          </Box>
+
+          {/* Header Skeleton */}
+          <Box display="flex" alignItems="flex-start" gap={2} mt={2}>
+            <Skeleton variant="circular" width={64} height={64} />
+            <Box flex={1}>
+              <Skeleton variant="text" width="100%" height={32} />
+              <Skeleton variant="rounded" width={100} height={28} sx={{ mt: 1 }} />
+            </Box>
+          </Box>
+
+          {/* Document Info Table Skeleton */}
+          <Box mt={2}>
+            <Skeleton variant="text" width={180} height={28} sx={{ mb: 2 }} />
+            <Box display="flex" flexDirection="column" gap={1}>
+              <Skeleton variant="rectangular" height={50} />
+              <Skeleton variant="rectangular" height={50} />
+              <Skeleton variant="rectangular" height={50} />
+              <Skeleton variant="rectangular" height={50} />
+            </Box>
+          </Box>
+
+          {/* Action Buttons Skeleton */}
+          <Box mt={2}>
+            <Skeleton variant="text" width={120} height={28} sx={{ mb: 2 }} />
+            <Box display="flex" flexDirection="column" gap={1.5}>
+              <Skeleton variant="rounded" width="100%" height={46} />
+              <Skeleton variant="rounded" width="100%" height={46} />
+            </Box>
+          </Box>
+        </Paper>
+
+        {/* PDF Viewer Skeleton */}
+        <Box
+          sx={{
+            borderRadius: "8px",
+            overflow: "hidden",
+            boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
+            flex: 1,
+            minWidth: 0,
+            backgroundColor: "#fff",
+          }}
+        >
+          <Skeleton variant="rectangular" width="100%" height="100%" />
+        </Box>
+      </Box>
+    );
+  }
+
   return (
     <Box
       sx={{
@@ -189,14 +291,21 @@ function ContentViewPage() {
           sx={{ mb: 1 }}
         >
           <Link
+            component="button"
             color="inherit"
-            href="#"
-            onClick={() => navigate("/dashboard")}
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/dashboard");
+            }}
             sx={{
               display: "flex",
               alignItems: "center",
               textDecoration: "none",
               fontSize: "0.9rem",
+              border: "none",
+              background: "none",
+              cursor: "pointer",
+              padding: 0,
               "&:hover": { color: "#6e3cbe" },
             }}
           >
@@ -204,26 +313,38 @@ function ContentViewPage() {
             Dashboard
           </Link>
           <Link
+            component="button"
             color="inherit"
-            href="#"
-            onClick={() => navigate("/documents")}
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/documents");
+            }}
             sx={{
               textDecoration: "none",
               fontSize: "0.9rem",
+              border: "none",
+              background: "none",
+              cursor: "pointer",
+              padding: 0,
               "&:hover": { color: "#6e3cbe" },
             }}
           >
             Documents
           </Link>
           <Link
+            component="button"
             color="inherit"
-            href="#"
-            onClick={() =>
-              navigate(`/documents/${documentData?.data.type?.toLowerCase()}`)
-            }
+            onClick={(e) => {
+              e.preventDefault();
+              navigate(`/documents/${documentData?.data.type?.toLowerCase()}`);
+            }}
             sx={{
               textDecoration: "none",
               fontSize: "0.9rem",
+              border: "none",
+              background: "none",
+              cursor: "pointer",
+              padding: 0,
               "&:hover": { color: "#6e3cbe" },
             }}
           >
@@ -243,6 +364,59 @@ function ContentViewPage() {
             {documentData?.name || "Document"}
           </Typography>
         </Breadcrumbs>
+
+        {/* Navigation Buttons */}
+        <Box display="flex" flexDirection="column" gap={1} mb={2}>
+          {/* Back to Search Button (if coming from search) */}
+          {hasSearchState && (
+            <Button
+              onClick={handleBackToSearch}
+              startIcon={<ArrowBack />}
+              variant="outlined"
+              size="small"
+              fullWidth
+              sx={{
+                backgroundColor: "white",
+                borderColor: "#6e3cbe",
+                color: "#6e3cbe",
+                textTransform: "none",
+                fontWeight: 600,
+                borderWidth: "1.5px",
+                "&:hover": {
+                  backgroundColor: "white",
+                  borderColor: "#5a2d9f",
+                  borderWidth: "1.5px",
+                },
+              }}
+            >
+              Back to Search
+            </Button>
+          )}
+
+          {/* Back to Documents Button (always visible) */}
+          <Button
+            onClick={() => navigate("/documents")}
+            startIcon={<ArrowBack />}
+            variant="outlined"
+            size="small"
+            fullWidth
+            sx={{
+              backgroundColor: "white",
+              borderColor: "#6e3cbe",
+              color: "#6e3cbe",
+              textTransform: "none",
+              fontWeight: 600,
+              borderWidth: "1.5px",
+              "&:hover": {
+                backgroundColor: "white",
+                borderColor: "#5a2d9f",
+                borderWidth: "1.5px",
+              },
+            }}
+          >
+            Back to Documents
+          </Button>
+        </Box>
 
         {/* Document Header */}
         <Box display="flex" alignItems="flex-start" gap={2}>

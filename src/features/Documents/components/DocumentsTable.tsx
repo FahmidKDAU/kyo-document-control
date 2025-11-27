@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Document } from "../../../Types/types";
+import docService from "../services/docService";
 import {
   TableContainer,
   Table,
@@ -24,6 +25,7 @@ import {
   CalendarToday as CalendarIcon,
   Category as CategoryIcon,
   Functions as FunctionIcon,
+  OpenInNew as OpenInNewIcon,
 } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 
@@ -220,6 +222,11 @@ function DocumentsTable({
                 Release Date
               </TableSortLabel>
             </TableCell>
+
+            {/* Actions Column */}
+            <TableCell sx={{...headerCellStyle, textAlign: 'center', width: '80px'}}>
+              Actions
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -393,6 +400,47 @@ function DocumentsTable({
                     {formatDate(doc.data.releasedate)}
                   </Typography>
                 </Box>
+              </TableCell>
+
+              {/* Actions */}
+              <TableCell sx={{ py: 2, px: 3, textAlign: 'center' }}>
+                <Tooltip title="Open PDF in New Tab" arrow>
+                  <IconButton
+                    size="small"
+                    onClick={async (e) => {
+                      e.stopPropagation();
+                      try {
+                        // Fetch the Base64-encoded document content
+                        const response = await docService.getDocumentContent(doc.id);
+
+                        // Decode the Base64 content and create a Blob URL
+                        const byteCharacters = atob(response.content);
+                        const byteNumbers = new Array(byteCharacters.length);
+                        for (let i = 0; i < byteCharacters.length; i++) {
+                          byteNumbers[i] = byteCharacters.charCodeAt(i);
+                        }
+                        const byteArray = new Uint8Array(byteNumbers);
+                        const blob = new Blob([byteArray], { type: "application/pdf" });
+                        const url = URL.createObjectURL(blob);
+                        
+                        // Open the PDF in a new tab
+                        window.open(url, '_blank');
+                      } catch (error) {
+                        console.error("Error opening PDF:", error);
+                      }
+                    }}
+                    sx={{
+                      color: theme.palette.kyoPurple?.main || '#6e3cbe',
+                      transition: 'all 0.2s ease',
+                      '&:hover': {
+                        backgroundColor: alpha(theme.palette.kyoPurple?.main || '#6e3cbe', 0.1),
+                        transform: 'scale(1.1)',
+                      },
+                    }}
+                  >
+                    <OpenInNewIcon fontSize="small" />
+                  </IconButton>
+                </Tooltip>
               </TableCell>
             </TableRow>
           ))}

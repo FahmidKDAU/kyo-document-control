@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import docService from "../../features/Documents/services/docService";
 import {
   Box,
@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import DocumentsTable from "../../features/Documents/components/DocumentsTable";
 import Filters from "../../features/Documents/components/Filters";
+import LoadingSpinner from "../../components/LoadingSpinner/LoadingSpinner";
 import PolicyIcon from "@mui/icons-material/Policy";
 import ArticleIcon from "@mui/icons-material/Article";
 import DescriptionIcon from "@mui/icons-material/Description";
@@ -32,6 +33,7 @@ interface DocType {
 
 interface DocumentsPageProps {
   docTypes: DocType[];
+  isLoading:  boolean; 
   documents: any[]; // Add documents prop
   totalDocumentCount: number; // Add totalDocumentCount prop
 }
@@ -51,16 +53,19 @@ interface FilterData {
 
 const DocumentsPage: React.FC<DocumentsPageProps> = ({
   docTypes = [],
+  isLoading = false,
   documents = [], // Receive documents as prop
   totalDocumentCount = 0, // Receive totalDocumentCount as prop
 }) => {
   const { category } = useParams<{ category?: string }>();
+  const [searchParams, setSearchParams] = useSearchParams();
   // Remove local documents state - now using prop
   // const [documents, setDocuments] = useState([]);
   const [filterData, setFilterData] = useState<FilterData[]>([]);
   const [filterQuery, setFilterQuery] = useState({});
   const [searchQuery, setSearchQuery] = useState("");
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
+  const [isFilterDataLoading, setIsFilterDataLoading] = useState(true);
   const navigate = useNavigate();
   const theme = useTheme();
 
@@ -90,17 +95,36 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({
     return matchingDocType ? matchingDocType.name : null;
   };
 
+  // Restore filter state from URL params on mount
+  useEffect(() => {
+    const search = searchParams.get('search');
+    const category = searchParams.get('filterCategory');
+    const functions = searchParams.get('filterFunctions');
+
+    if (search) setSearchQuery(search);
+    
+    const restoredFilter: any = {};
+    if (category) restoredFilter.category = category.split(',');
+    if (functions) restoredFilter.functionsubfn = functions.split(',');
+    
+    if (Object.keys(restoredFilter).length > 0) {
+      setFilterQuery(restoredFilter);
+    }
+  }, [searchParams]);
+
   // Fetch only filter data on component mount (documents come from props)
   useEffect(() => {
     // Remove getDocuments function since documents come as props
 
     const getFilterData = async () => {
       try {
+        setIsFilterDataLoading(true);
         const response = await docService.getFilterData();
-
         setFilterData(response);
       } catch (error) {
         console.error("There was an error fetching filter data:", error);
+      } finally {
+        setIsFilterDataLoading(false);
       }
     };
 
@@ -222,7 +246,16 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({
   }, [baseFilteredDocuments, filterQuery, searchQuery]);
 
   const handleRowClick = (doc) => {
-    navigate(`/documents/${doc.data.type}/${doc.id}`);
+    // Build query params to preserve search state
+    const params = new URLSearchParams();
+    
+    if (searchQuery) params.set('search', searchQuery);
+    if (filterQuery.category?.length) params.set('filterCategory', filterQuery.category.join(','));
+    if (filterQuery.functionsubfn?.length) params.set('filterFunctions', filterQuery.functionsubfn.join(','));
+    if (category) params.set('fromCategory', category);
+    
+    const queryString = params.toString();
+    navigate(`/documents/${doc.data.type}/${doc.id}${queryString ? `?${queryString}` : ''}`);
   };
 
   // Get display name for the page title
@@ -294,13 +327,20 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({
             sx={{ mb: 2 }}
           >
             <Link
+              component="button"
               color="inherit"
-              href="#"
-              onClick={() => navigate("/documents")}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/documents");
+              }}
               sx={{
                 display: "flex",
                 alignItems: "center",
                 textDecoration: "none",
+                border: "none",
+                background: "none",
+                cursor: "pointer",
+                padding: 0,
                 "&:hover": {
                   color: theme.palette.kyoPurple?.main || "#6e3cbe",
                 },
@@ -310,11 +350,18 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({
               Home
             </Link>
             <Link
+              component="button"
               color="inherit"
-              href="#"
-              onClick={() => navigate("/documents")}
+              onClick={(e) => {
+                e.preventDefault();
+                navigate("/documents");
+              }}
               sx={{
                 textDecoration: "none",
+                border: "none",
+                background: "none",
+                cursor: "pointer",
+                padding: 0,
                 "&:hover": {
                   color: theme.palette.kyoPurple?.main || "#6e3cbe",
                 },
@@ -439,6 +486,7 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({
             handleSearchChange={handleSearchChange}
             searchQuery={searchQuery}
             documents={documents}
+            isLoading={isLoading || isFilterDataLoading}
             expandButton={
               filteredDocuments.length > 0 && (
                 <Button
@@ -463,8 +511,20 @@ const DocumentsPage: React.FC<DocumentsPageProps> = ({
             }
           />
 
-          {/* Conditional rendering: Table OR Empty State */}
-          {filteredDocuments.length > 0 ? (
+          {/* Conditional rendering: Loading Spinner, Table OR Empty State */}
+          {isLoading ? (
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                flex: 1,
+                minHeight: "300px",
+              }}
+            >
+              <LoadingSpinner size={60} color={theme.palette.kyoPurple?.main || "#6e3cbe"} />
+            </Box>
+          ) : filteredDocuments.length > 0 ? (
             <DocumentsTable
               filteredDocuments={filteredDocuments}
               handleRowClick={handleRowClick}
