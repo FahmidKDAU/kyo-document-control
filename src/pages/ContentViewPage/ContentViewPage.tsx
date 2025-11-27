@@ -418,18 +418,18 @@ function ContentViewPage() {
             fullWidth
             sx={{
               backgroundColor: "white",
-              borderColor: "#6e3cbe",
+              borderColor: "#e0e0e0",
               color: "#6e3cbe",
               textTransform: "none",
               fontWeight: 600,
               borderRadius: "10px",
               py: 1.2,
               fontSize: "0.9rem",
-              borderWidth: "2px",
+              borderWidth: "1px",
               "&:hover": {
                 backgroundColor: "rgba(110, 60, 190, 0.05)",
-                borderColor: "#5a2d9f",
-                borderWidth: "2px",
+                borderColor: "#6e3cbe",
+                borderWidth: "1px",
               },
             }}
           >

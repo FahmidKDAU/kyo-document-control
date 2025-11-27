@@ -32,6 +32,10 @@ import {
   NavigateNext,
   Visibility,
   FindInPage,
+  NewReleases,
+  CheckCircle,
+  OpenInNew,
+  Visibility as VisibilityIcon,
 } from "@mui/icons-material";
 
 export default function HelpContent() {
@@ -49,93 +53,238 @@ export default function HelpContent() {
       <Paper
         elevation={0}
         sx={{
-          background: `linear-gradient(135deg, ${theme.palette.kyoPurple.main || "#6e3cbe"}0D 0%, ${theme.palette.kyoPurple.main || "#6e3cbe"}05 100%)`,
+          background: `linear-gradient(135deg, ${theme.palette.kyoPurple.main || "#6e3cbe"} 0%, ${theme.palette.kyoPurple.main || "#6e3cbe"}E6 100%)`,
           borderRadius: "16px",
-          padding: "32px",
+          padding: "40px",
           marginBottom: "24px",
-          border: `1px solid ${theme.palette.kyoPurple.main || "#6e3cbe"}1A`,
+          border: `1px solid ${theme.palette.kyoPurple.main || "#6e3cbe"}`,
           textAlign: "center",
+          position: "relative",
+          overflow: "hidden",
+          "&::before": {
+            content: '""',
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "radial-gradient(circle at top right, rgba(255,255,255,0.2), transparent 50%)",
+            pointerEvents: "none",
+          },
         }}
       >
-        <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
-          <Help
+        <Box sx={{ position: "relative", zIndex: 1 }}>
+          <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
+            <Help
+              sx={{
+                fontSize: "3.5rem",
+                color: "white",
+                background: "rgba(255, 255, 255, 0.2)",
+                padding: "12px",
+                borderRadius: "50%",
+                backdropFilter: "blur(10px)",
+              }}
+            />
+          </Box>
+          <Typography
+            variant="h3"
             sx={{
-              fontSize: "4rem",
+              fontWeight: 700,
+              color: "white",
+              mb: 1,
+              fontSize: { xs: "2rem", md: "2.5rem" },
+              textShadow: "0 2px 4px rgba(0,0,0,0.1)",
+            }}
+          >
+            Help Center
+          </Typography>
+          <Chip
+            label="Version 1.2"
+            size="small"
+            sx={{
+              backgroundColor: "rgba(255, 255, 255, 0.9)",
               color: theme.palette.kyoPurple.main || "#6e3cbe",
-              background: `${theme.palette.kyoPurple.main || "#6e3cbe"}1A`,
-              padding: "16px",
-              borderRadius: "50%",
+              fontWeight: 700,
+              fontSize: "0.75rem",
+              height: "26px",
+              mb: 1.5,
             }}
           />
+          <Typography
+            variant="h6"
+            sx={{
+              color: "rgba(255, 255, 255, 0.95)",
+              fontSize: "1rem",
+              maxWidth: "700px",
+              margin: "0 auto",
+              lineHeight: 1.6,
+              textShadow: "0 1px 2px rgba(0,0,0,0.1)",
+            }}
+          >
+            Everything you need to know about navigating and using Kyocera's
+            Document Repository
+          </Typography>
         </Box>
-        <Typography
-          variant="h3"
-          sx={{
-            fontWeight: 700,
-            color: "#212121",
-            mb: 2,
-            fontSize: { xs: "2rem", md: "2.5rem" },
-          }}
-        >
-          Help Center
-        </Typography>
-        <Typography
-          variant="h6"
-          sx={{
-            color: "#666",
-            fontSize: "1.1rem",
-            maxWidth: "600px",
-            margin: "0 auto",
-            lineHeight: 1.6,
-          }}
-        >
-          Everything you need to know about navigating and using Kyocera's
-          Document Repository
-        </Typography>
 
         {/* Quick Stats */}
         <Box
           sx={{
+            position: "relative",
+            zIndex: 1,
             display: "flex",
             justifyContent: "center",
-            gap: 3,
+            gap: 2,
             mt: 3,
             flexWrap: "wrap",
           }}
         >
           <Chip
-            icon={<FolderOpen sx={{ color: "#6e3cbe !important" }} />}
+            icon={<FolderOpen sx={{ color: "white !important" }} />}
             label="All Documents"
-            variant="outlined"
             sx={{
-              backgroundColor: `${theme.palette.kyoPurple.main || "#6e3cbe"}1A`,
-              borderColor: theme.palette.kyoPurple.main || "#6e3cbe",
-              color: theme.palette.kyoPurple.main || "#6e3cbe",
+              backgroundColor: "rgba(255, 255, 255, 0.25)",
+              backdropFilter: "blur(10px)",
+              color: "white",
               fontWeight: 600,
+              border: "1px solid rgba(255, 255, 255, 0.3)",
+              "&:hover": {
+                backgroundColor: "rgba(255, 255, 255, 0.35)",
+              },
             }}
           />
           <Chip
-            icon={<Policy sx={{ color: "#6e3cbe !important" }} />}
-            label="Policies & Procedures"
-            variant="outlined"
+            icon={<Policy sx={{ color: "white !important" }} />}
+            label="Smart Filtering"
             sx={{
-              backgroundColor: `${theme.palette.kyoPurple.main || "#6e3cbe"}1A`,
-              borderColor: theme.palette.kyoPurple.main || "#6e3cbe",
-              color: theme.palette.kyoPurple.main || "#6e3cbe",
+              backgroundColor: "rgba(255, 255, 255, 0.25)",
+              backdropFilter: "blur(10px)",
+              color: "white",
               fontWeight: 600,
+              border: "1px solid rgba(255, 255, 255, 0.3)",
+              "&:hover": {
+                backgroundColor: "rgba(255, 255, 255, 0.35)",
+              },
             }}
           />
           <Chip
-            icon={<Article sx={{ color: "#6e3cbe !important" }} />}
-            label="Forms & Templates"
-            variant="outlined"
+            icon={<Search sx={{ color: "white !important" }} />}
+            label="Advanced Search"
             sx={{
-              backgroundColor: `${theme.palette.kyoPurple.main || "#6e3cbe"}1A`,
-              borderColor: theme.palette.kyoPurple.main || "#6e3cbe",
-              color: theme.palette.kyoPurple.main || "#6e3cbe",
+              backgroundColor: "rgba(255, 255, 255, 0.25)",
+              backdropFilter: "blur(10px)",
+              color: "white",
               fontWeight: 600,
+              border: "1px solid rgba(255, 255, 255, 0.3)",
+              "&:hover": {
+                backgroundColor: "rgba(255, 255, 255, 0.35)",
+              },
             }}
           />
+        </Box>
+      </Paper>
+
+      {/* What's New Section */}
+      <Paper
+        elevation={0}
+        sx={{
+          borderRadius: "16px",
+          padding: "24px",
+          marginBottom: "24px",
+          background: "linear-gradient(135deg, #f5f5f5 0%, #fafafa 100%)",
+          border: "1px solid #e0e0e0",
+        }}
+      >
+        <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 3 }}>
+          <NewReleases sx={{ fontSize: "2rem", color: theme.palette.kyoPurple.main || "#6e3cbe" }} />
+          <Typography variant="h5" sx={{ fontWeight: 700, color: "#212121" }}>
+            What's New in Version 1.2
+          </Typography>
+        </Box>
+        
+        <Box sx={{ display: "grid", gap: 2, gridTemplateColumns: { xs: "1fr", md: "1fr 1fr" } }}>
+          <Card sx={{ p: 2, backgroundColor: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}>
+            <Box sx={{ display: "flex", alignItems: "start", gap: 1.5 }}>
+              <CheckCircle sx={{ color: "#43a047", fontSize: "1.2rem", mt: 0.3 }} />
+              <Box>
+                <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "#212121", mb: 0.5 }}>
+                  Content View Page UI Redesign
+                </Typography>
+                <Typography variant="body2" sx={{ color: "#666" }}>
+                  Modern card-based sidebar layout with improved document information display and better visual hierarchy
+                </Typography>
+              </Box>
+            </Box>
+          </Card>
+
+          <Card sx={{ p: 2, backgroundColor: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}>
+            <Box sx={{ display: "flex", alignItems: "start", gap: 1.5 }}>
+              <CheckCircle sx={{ color: "#43a047", fontSize: "1.2rem", mt: 0.3 }} />
+              <Box>
+                <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "#212121", mb: 0.5 }}>
+                  Floating Action Bar
+                </Typography>
+                <Typography variant="body2" sx={{ color: "#666" }}>
+                  Quick actions (Download, Open in Tab, Hide) now accessible via floating bar over PDF
+                </Typography>
+              </Box>
+            </Box>
+          </Card>
+
+          <Card sx={{ p: 2, backgroundColor: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}>
+            <Box sx={{ display: "flex", alignItems: "start", gap: 1.5 }}>
+              <CheckCircle sx={{ color: "#43a047", fontSize: "1.2rem", mt: 0.3 }} />
+              <Box>
+                <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "#212121", mb: 0.5 }}>
+                  Help Content Page UI Redesign
+                </Typography>
+                <Typography variant="body2" sx={{ color: "#666" }}>
+                  Professional redesign with version tracking, modern accordions, and comprehensive patch notes
+                </Typography>
+              </Box>
+            </Box>
+          </Card>
+
+          <Card sx={{ p: 2, backgroundColor: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}>
+            <Box sx={{ display: "flex", alignItems: "start", gap: 1.5 }}>
+              <CheckCircle sx={{ color: "#43a047", fontSize: "1.2rem", mt: 0.3 }} />
+              <Box>
+                <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "#212121", mb: 0.5 }}>
+                  Skeleton Loading
+                </Typography>
+                <Typography variant="body2" sx={{ color: "#666" }}>
+                  Improved loading states with skeleton screens for smoother user experience
+                </Typography>
+              </Box>
+            </Box>
+          </Card>
+
+          <Card sx={{ p: 2, backgroundColor: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}>
+            <Box sx={{ display: "flex", alignItems: "start", gap: 1.5 }}>
+              <CheckCircle sx={{ color: "#43a047", fontSize: "1.2rem", mt: 0.3 }} />
+              <Box>
+                <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "#212121", mb: 0.5 }}>
+                  Search State Preservation
+                </Typography>
+                <Typography variant="body2" sx={{ color: "#666" }}>
+                  Search and filter states are now preserved when navigating between pages
+                </Typography>
+              </Box>
+            </Box>
+          </Card>
+
+          <Card sx={{ p: 2, backgroundColor: "white", boxShadow: "0 2px 8px rgba(0,0,0,0.08)" }}>
+            <Box sx={{ display: "flex", alignItems: "start", gap: 1.5 }}>
+              <CheckCircle sx={{ color: "#43a047", fontSize: "1.2rem", mt: 0.3 }} />
+              <Box>
+                <Typography variant="subtitle1" sx={{ fontWeight: 600, color: "#212121", mb: 0.5 }}>
+                  Direct PDF Opening
+                </Typography>
+                <Typography variant="body2" sx={{ color: "#666" }}>
+                  Open documents directly in new tabs from the documents table
+                </Typography>
+              </Box>
+            </Box>
+          </Card>
         </Box>
       </Paper>
 
@@ -147,31 +296,44 @@ export default function HelpContent() {
           onChange={handleChange("navigation")}
           sx={{
             mb: 2,
-            borderRadius: "12px !important",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+            borderRadius: "16px !important",
+            boxShadow: "0px 2px 2px 1px rgba(0, 0, 0, 0.1)",
+            border: "1px solid #e0e0e0",
             "&:before": { display: "none" },
+            overflow: "hidden",
           }}
         >
           <AccordionSummary
-            expandIcon={<ExpandMore />}
+            expandIcon={<ExpandMore sx={{ color: theme.palette.kyoPurple.main || "#6e3cbe" }} />}
             sx={{
-              backgroundColor: `${theme.palette.kyoPurple.main || "#6e3cbe"}0D`,
-              borderRadius: "12px",
+              backgroundColor: "#fafafa",
+              minHeight: "64px",
               "&.Mui-expanded": {
-                borderRadius: "12px 12px 0 0",
+                borderBottom: "1px solid #e0e0e0",
               },
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-              <NavigateNext
+              <Box
                 sx={{
-                  color: theme.palette.kyoPurple.main || "#6e3cbe",
-                  fontSize: "1.5rem",
+                  backgroundColor: `${theme.palette.kyoPurple.main || "#6e3cbe"}15`,
+                  borderRadius: "8px",
+                  padding: "8px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
-              />
+              >
+                <NavigateNext
+                  sx={{
+                    color: theme.palette.kyoPurple.main || "#6e3cbe",
+                    fontSize: "1.5rem",
+                  }}
+                />
+              </Box>
               <Typography
                 variant="h6"
-                sx={{ fontWeight: 600, color: "#2c2c2c" }}
+                sx={{ fontWeight: 700, color: "#212121", fontSize: "1.1rem" }}
               >
                 Navigating the Website
               </Typography>
@@ -281,6 +443,24 @@ export default function HelpContent() {
                   }}
                 />
               </ListItem>
+              <ListItem sx={{ mb: 1 }}>
+                <ListItemIcon>
+                  <OpenInNew
+                    sx={{ color: theme.palette.kyoPurple.main || "#6e3cbe" }}
+                  />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Quick Actions from Table"
+                  secondary="Open documents directly in new tab using the action icon in the documents table"
+                  sx={{
+                    "& .MuiListItemText-primary": {
+                      fontWeight: 600,
+                      color: "#2c2c2c",
+                    },
+                    "& .MuiListItemText-secondary": { color: "#666" },
+                  }}
+                />
+              </ListItem>
             </List>
           </AccordionDetails>
         </Accordion>
@@ -291,31 +471,44 @@ export default function HelpContent() {
           onChange={handleChange("viewing")}
           sx={{
             mb: 2,
-            borderRadius: "12px !important",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+            borderRadius: "16px !important",
+            boxShadow: "0px 2px 2px 1px rgba(0, 0, 0, 0.1)",
+            border: "1px solid #e0e0e0",
             "&:before": { display: "none" },
+            overflow: "hidden",
           }}
         >
           <AccordionSummary
-            expandIcon={<ExpandMore />}
+            expandIcon={<ExpandMore sx={{ color: theme.palette.kyoPurple.main || "#6e3cbe" }} />}
             sx={{
-              backgroundColor: `${theme.palette.kyoPurple.main || "#6e3cbe"}0D`,
-              borderRadius: "12px",
+              backgroundColor: "#fafafa",
+              minHeight: "64px",
               "&.Mui-expanded": {
-                borderRadius: "12px 12px 0 0",
+                borderBottom: "1px solid #e0e0e0",
               },
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-              <PictureAsPdf
+              <Box
                 sx={{
-                  color: theme.palette.kyoPurple.main || "#6e3cbe",
-                  fontSize: "1.5rem",
+                  backgroundColor: `${theme.palette.kyoPurple.main || "#6e3cbe"}15`,
+                  borderRadius: "8px",
+                  padding: "8px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
-              />
+              >
+                <PictureAsPdf
+                  sx={{
+                    color: theme.palette.kyoPurple.main || "#6e3cbe",
+                    fontSize: "1.5rem",
+                  }}
+                />
+              </Box>
               <Typography
                 variant="h6"
-                sx={{ fontWeight: 600, color: "#2c2c2c" }}
+                sx={{ fontWeight: 700, color: "#212121", fontSize: "1.1rem" }}
               >
                 Viewing & Downloading Documents
               </Typography>
@@ -352,22 +545,32 @@ export default function HelpContent() {
                 <List dense>
                   <ListItem sx={{ pl: 0 }}>
                     <Typography variant="body2" sx={{ color: "#555" }}>
-                      • Navigate to any document section
+                      • Click on any document row to open the viewer
                     </Typography>
                   </ListItem>
                   <ListItem sx={{ pl: 0 }}>
                     <Typography variant="body2" sx={{ color: "#555" }}>
-                      • Click on the document to open PDF viewer
+                      • Loading spinner appears while PDF loads
                     </Typography>
                   </ListItem>
                   <ListItem sx={{ pl: 0 }}>
                     <Typography variant="body2" sx={{ color: "#555" }}>
-                      • Use browser's built-in PDF controls
+                      • View document details in the left sidebar
                     </Typography>
                   </ListItem>
                   <ListItem sx={{ pl: 0 }}>
                     <Typography variant="body2" sx={{ color: "#555" }}>
-                      • Click "New Tab" for fullscreen view
+                      • Use floating action bar at bottom for quick actions
+                    </Typography>
+                  </ListItem>
+                  <ListItem sx={{ pl: 0 }}>
+                    <Typography variant="body2" sx={{ color: "#555" }}>
+                      • Click "Open in Tab" to view PDF in new tab
+                    </Typography>
+                  </ListItem>
+                  <ListItem sx={{ pl: 0 }}>
+                    <Typography variant="body2" sx={{ color: "#555" }}>
+                      • Hide action bar for cleaner viewing experience
                     </Typography>
                   </ListItem>
                 </List>
@@ -394,12 +597,17 @@ export default function HelpContent() {
                 <List dense>
                   <ListItem sx={{ pl: 0 }}>
                     <Typography variant="body2" sx={{ color: "#555" }}>
-                      • Click the "Download" button in document viewer
+                      • Click "Download" button in floating action bar
                     </Typography>
                   </ListItem>
                   <ListItem sx={{ pl: 0 }}>
                     <Typography variant="body2" sx={{ color: "#555" }}>
-                      • File format controlled by administrator
+                      • File downloads directly to your device
+                    </Typography>
+                  </ListItem>
+                  <ListItem sx={{ pl: 0 }}>
+                    <Typography variant="body2" sx={{ color: "#555" }}>
+                      • File format determined by administrator settings
                     </Typography>
                   </ListItem>
                   <ListItem sx={{ pl: 0 }}>
@@ -424,31 +632,44 @@ export default function HelpContent() {
           onChange={handleChange("search")}
           sx={{
             mb: 2,
-            borderRadius: "12px !important",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+            borderRadius: "16px !important",
+            boxShadow: "0px 2px 2px 1px rgba(0, 0, 0, 0.1)",
+            border: "1px solid #e0e0e0",
             "&:before": { display: "none" },
+            overflow: "hidden",
           }}
         >
           <AccordionSummary
-            expandIcon={<ExpandMore />}
+            expandIcon={<ExpandMore sx={{ color: theme.palette.kyoPurple.main || "#6e3cbe" }} />}
             sx={{
-              backgroundColor: `${theme.palette.kyoPurple.main || "#6e3cbe"}0D`,
-              borderRadius: "12px",
+              backgroundColor: "#fafafa",
+              minHeight: "64px",
               "&.Mui-expanded": {
-                borderRadius: "12px 12px 0 0",
+                borderBottom: "1px solid #e0e0e0",
               },
             }}
           >
             <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-              <Search
+              <Box
                 sx={{
-                  color: theme.palette.kyoPurple.main || "#6e3cbe",
-                  fontSize: "1.5rem",
+                  backgroundColor: `${theme.palette.kyoPurple.main || "#6e3cbe"}15`,
+                  borderRadius: "8px",
+                  padding: "8px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
-              />
+              >
+                <Search
+                  sx={{
+                    color: theme.palette.kyoPurple.main || "#6e3cbe",
+                    fontSize: "1.5rem",
+                  }}
+                />
+              </Box>
               <Typography
                 variant="h6"
-                sx={{ fontWeight: 600, color: "#2c2c2c" }}
+                sx={{ fontWeight: 700, color: "#212121", fontSize: "1.1rem" }}
               >
                 Search Features
               </Typography>
@@ -466,7 +687,8 @@ export default function HelpContent() {
                 sx={{
                   p: 3,
                   backgroundColor: `${theme.palette.kyoPurple.main || "#6e3cbe"}08`,
-                  border: `1px solid ${theme.palette.kyoPurple.main || "#6e3cbe"}33`,
+                  border: "1px solid #e0e0e0",
+                  boxShadow: "0px 2px 2px 1px rgba(0, 0, 0, 0.1)",
                 }}
               >
                 <Box
@@ -499,8 +721,9 @@ export default function HelpContent() {
               <Card
                 sx={{
                   p: 3,
-                  backgroundColor: "#2828280A",
-                  border: "1px solid #28282833",
+                  backgroundColor: "#f5f5f5",
+                  border: "1px solid #e0e0e0",
+                  boxShadow: "0px 2px 2px 1px rgba(0, 0, 0, 0.1)",
                 }}
               >
                 <Box
@@ -534,58 +757,73 @@ export default function HelpContent() {
         elevation={0}
         sx={{
           borderRadius: "16px",
-          padding: "24px",
-          color: "#2c2c2c",
+          padding: "40px",
           textAlign: "center",
-
-          background: `linear-gradient(135deg, ${theme.palette.kyoPurple.main || "#6e3cbe"}0D 0%, ${theme.palette.kyoPurple.main || "#6e3cbe"}05 100%)`,
+          background: "white",
+          border: "1px solid #e0e0e0",
+          boxShadow: "0px 2px 2px 1px rgba(0, 0, 0, 0.1)",
         }}
       >
-        <Email
+        <Box
           sx={{
-            fontSize: "3rem",
+            display: "inline-flex",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: `${theme.palette.kyoPurple.main || "#6e3cbe"}15`,
+            borderRadius: "50%",
+            width: "80px",
+            height: "80px",
             mb: 2,
-            color: theme.palette.kyoPurple.main || "#6e3cbe",
           }}
-        />
+        >
+          <Email
+            sx={{
+              fontSize: "2.5rem",
+              color: theme.palette.kyoPurple.main || "#6e3cbe",
+            }}
+          />
+        </Box>
         <Typography
           variant="h5"
-          sx={{ fontWeight: 600, mb: 2, color: "#2c2c2c" }}
+          sx={{ fontWeight: 700, mb: 1.5, color: "#212121" }}
         >
           Need Additional Help?
         </Typography>
         <Typography
           variant="body1"
-          sx={{ mb: 3, color: "#666", fontSize: "1.1rem" }}
+          sx={{ mb: 3, color: "#666", fontSize: "1rem", maxWidth: "600px", margin: "0 auto 24px" }}
         >
-          If you encounter any issues or bugs, our support team is here to help!
+          If you encounter any issues, have questions, or want to report a bug, our support team is ready to assist you!
         </Typography>
         <Button
-          variant="outlined"
+          variant="contained"
           startIcon={<Email />}
-          href="mailto:Fahmid.Ahmed@dau.kyocera.com"
+          href="mailto:BusinessSolutions@dau.kyocera.com"
           sx={{
-            borderColor: theme.palette.kyoPurple.main || "#6e3cbe",
-            color: theme.palette.kyoPurple.main || "#6e3cbe",
+            backgroundColor: theme.palette.kyoPurple.main || "#6e3cbe",
+            color: "white",
             fontWeight: 600,
-            borderRadius: "8px",
+            borderRadius: "12px",
             textTransform: "none",
-            padding: "12px 24px",
+            padding: "14px 32px",
             fontSize: "1rem",
-            borderWidth: "2px",
-            background: "white",
+            boxShadow: "0 4px 12px rgba(110, 60, 190, 0.3)",
             "&:hover": {
-              borderColor: theme.palette.kyoPurple.main || "#6e3cbe",
-              backgroundColor: `${theme.palette.kyoPurple.main || "#6e3cbe"}0D`,
-              borderWidth: "2px",
+              backgroundColor: "#5a2d9f",
               transform: "translateY(-2px)",
-              boxShadow: `0 8px 20px ${theme.palette.kyoPurple.main || "#6e3cbe"}33`,
+              boxShadow: "0 8px 24px rgba(110, 60, 190, 0.4)",
             },
             transition: "all 0.3s ease",
           }}
         >
-          Contact Support: BusinessSolutions@dau.kyocera.com
+          Contact Support
         </Button>
+        <Typography
+          variant="body2"
+          sx={{ mt: 2, color: "#999", fontSize: "0.875rem" }}
+        >
+          BusinessSolutions@dau.kyocera.com
+        </Typography>
       </Paper>
     </Box>
   );
