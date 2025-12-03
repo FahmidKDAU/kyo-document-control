@@ -729,9 +729,9 @@ function ContentViewPage() {
                 }}
               >
                 <Button
-                  onClick={handleDownloadClick}
+                  onClick={handleOpenInNewTab}
                   variant="contained"
-                  startIcon={<Download />}
+                  startIcon={<OpenInNew />}
                   sx={{
                     backgroundColor: "#6e3cbe",
                     color: "white",
@@ -750,12 +750,12 @@ function ContentViewPage() {
                     transition: "all 0.2s ease-in-out",
                   }}
                 >
-                  Download
+                  Open in Tab
                 </Button>
                 <Button
-                  onClick={handleOpenInNewTab}
+                  onClick={handleDownloadClick}
                   variant="outlined"
-                  startIcon={<OpenInNew />}
+                  startIcon={<Download />}
                   sx={{
                     borderColor: "#6e3cbe",
                     color: "#6e3cbe",
@@ -776,7 +776,7 @@ function ContentViewPage() {
                     transition: "all 0.2s ease-in-out",
                   }}
                 >
-                  Open in Tab
+                  Download
                 </Button>
                 <Button
                   onClick={() => setShowActions(false)}
